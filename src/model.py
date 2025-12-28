@@ -52,15 +52,15 @@ class DifficultyClassifier:
         y_pred = self.model.predict(X_test)
         report = classification_report(y_test, y_pred)
 
-        # Сохранение
+        # 5. Сохранение артефактов
         joblib.dump(self.model, 'model.pkl')
+
+        # ИСПРАВЛЕНИЕ: Сохраняем метрики прямо внутри метода
+        with open("metrics.txt", "w") as f:
+            f.write(report)
 
         return report
 
 if __name__ == "__main__":
     clf = DifficultyClassifier()
-    report = clf.train('data/dataset.csv')
-    print(report)
-    # Сохраняем отчет в файл для CI/CD
-    with open("metrics.txt", "w") as f:
-        f.write(report)
+    clf.train('data/dataset.csv')
