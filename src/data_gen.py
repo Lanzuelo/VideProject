@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import random
+import os  # <--- Важный импорт
 
 def generate_synthetic_data(num_samples=200):
     """Генерирует датасет с вопросами и метриками."""
@@ -39,6 +40,12 @@ def generate_synthetic_data(num_samples=200):
         })
 
     df = pd.DataFrame(data)
+
+    # --- ИСПРАВЛЕНИЕ: Создаем папку data, если её нет ---
+    if not os.path.exists('data'):
+        os.makedirs('data')
+    # ----------------------------------------------------
+
     df.to_csv('data/dataset.csv', index=False)
     print("✅ Dataset generated at data/dataset.csv")
 
