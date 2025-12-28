@@ -1,0 +1,32 @@
+name: Train Model and Report
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Позволяет запускать вручную кнопку
+
+jobs:
+  train-and-evaluate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Generate Data
+      run: python src/data_gen.py
+      
+    - name: Train Model
+      run: python src/model.py
+      
+    - name: Upload Metrics Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: model-metrics
+        path: metrics.txt
